@@ -1,0 +1,30 @@
+
+body {
+    display: inline-block;
+     padding:5%;
+     width: 300px;
+     padding:3%; 
+     background-color:linear-gradient(50deg,floralwhite ,transparent );
+     height:"auto";
+     box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1);
+}
+
+h5 {
+font-size: 16px;
+font-weight: 500;
+color: black;
+text-shadow: 1px 1px 1px rebeccapurple;
+
+}
+.progress{
+    margin: 5%;
+}
+p{
+    font-size: 10px;
+    margin-bottom: 1%;
+    color:slategray;
+    text-shadow: 1px 1px 1px black;
+}
+.progress {
+    height: 40px;
+}

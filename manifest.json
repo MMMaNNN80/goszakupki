@@ -22,11 +22,13 @@
                 "https://zakupki.gov.ru/*"
             ],
             "run_at": "document_end",
-            "css": [],
+            "css": ["css/popupstyle.css"],
             "js": [
                 "app.js",
                 "js/downloadContract.js"
                   ]
         }
     ]
+    ,
+    "content_security_policy": "script-src 'self' https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js 'self' https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css 'self' ; object-src 'self'"
 }

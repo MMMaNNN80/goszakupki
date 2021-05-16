@@ -85,10 +85,11 @@ const downLoadContract = () => {
     const countRecords = (objlist.length >= 1000 ? 1000 : objlist.length)
     localStorage.setItem('list', JSON.stringify(objlist))
 
-    const actualWorkMethod =  () => {
+    actualWorkMethod();
+
+    function  actualWorkMethod ()  {
         if (activePage !== endPage) {
             pages.forEach((page) => {
-
                 if (Number(page.innerText) === activePage + 1) {
                     x.page = page
                     x.activePage = activePage
@@ -102,15 +103,14 @@ const downLoadContract = () => {
                     }
             })
         } else {
+           
             x.message = END;
             x.text = `${activePage} вкладка из ${activePage}`
-            sendMessages(x)
             localStorage.setItem('state',END)
-            getOutput(objlist)
-
+            sendMessages(x)
+             getOutput(objlist)
         }
     }
-    actualWorkMethod();
-
+  
 }
 
