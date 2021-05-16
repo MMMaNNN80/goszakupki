@@ -1,0 +1,32 @@
+{
+    "manifest_version": 2,
+    "name": "Помощник ГосЗакупок",
+    "description": "Помощник ГосЗакупок - скачиваем информацию о найденных контрактах",
+    "version": "1.0.0",
+    "icons": {
+        "55": "icon.png"
+    },
+    "browser_action": {
+        "default_icon": "icon.png",
+        "default_popup": "popup.html",
+        "default_title": "Помощник ГосЗакупок"
+    },
+    "permissions": [
+        "activeTab",
+        "storage"
+    ],
+    "options_page": "option.html",
+    "content_scripts": [
+        {
+            "matches": [
+                "https://zakupki.gov.ru/*"
+            ],
+            "run_at": "document_end",
+            "css": [],
+            "js": [
+                "app.js",
+                "js/downloadContract.js"
+                  ]
+        }
+    ]
+}
