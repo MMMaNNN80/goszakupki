@@ -26,16 +26,18 @@ text-shadow: 1px 1px 1px rebeccapurple;
 .progress{
     grid-column: 1/4;
     grid-row: 2;
-    height: 86px;
+    height: 25px;
     width: 270px;
 }
 p {
 
-    grid-column: 1/3;
+    grid-column: 1/4;
     grid-row: 3;
     font-size: 11px;
-    margin-bottom:  4%;
-    margin-top: 4%;
+    align-self: center;
+    justify-self: right;
+    margin-bottom:  0%;
+    margin-top: 0%;
     color:slategray;
    
  }
@@ -44,6 +46,7 @@ p {
     grid-column: 1;
     grid-row: 4;
     justify-self: normal;
+    font-size: 12px;
  
 
 }

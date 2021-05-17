@@ -1,10 +1,8 @@
 
 let action ={}
-
 let bnSearh = document.querySelector(".search")
 
 localStorage.getItem('state') === null ||  localStorage.getItem('state') !== 'END'? localStorage.removeItem('state') : ''
-
 
 const sendMessages = action => {
     chrome.tabs.query({ active: true, currentWindow: true }
@@ -26,24 +24,18 @@ const start = () =>{
     sendMessages(action);
 
 }
-
 const initialState =   () => {
     clearLocalStorage()
     countResultRows() 
     start()
 }
 
-
 const download = () =>
 {   
-    
     action={}
     action.message  =  `downLoadContract`
-    sendMessages(action);
-    
+    sendMessages(action);    
 }
-
-document.body.onload = initialState
 
 chrome.runtime.onMessage.addListener((request,sender,response) => {
     let el = document.getElementsByTagName('h5')  
@@ -62,28 +54,17 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
         }   
         document.getElementById('page').textContent = request.text ?? ''                     
     } 
-    else  {
-        
-       
+    else  {  
         document.getElementById('page').textContent = request.text
-        
         el[0].insertAdjacentHTML('afterend', getProgressBar({activePage:100, endPage:100}))
         localStorage.setItem('state','END')
        if (request.linkDownload && !document.querySelector(`#downloadCSV`)) {
-  
        document.querySelector(`.search`).insertAdjacentHTML('afterend',
-       `<a class = "btn btn-warning" id="downloadCSV" type = "input"  href="${request.linkDownload.href}" download= "${request.linkDownload.download}">CSV</a>
+       `<a class = "btn btn-outline-success" id="downloadCSV" type = "input"  href="${request.linkDownload.href}" download= "${request.linkDownload.download}">CSV</a>
        <div id="download"></div>`
-       )
-       
-    }
-
-      
-        
+       ) }        
     } 
-}
-
-);
+});
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         if (changeInfo.status == 'complete' && localStorage.getItem('state') !== null) {
@@ -91,24 +72,10 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
               download()
         }
     })
-//document.body.addEventListener("load",initialState,false)
-
-
-//document.body.onload = countResultRows
-
-//document.getElementById("search").onclick = download
-
-bnSearh.addEventListener('click', () => {
-    bnSearh.disabled=true;
-    download()
-},false)
-
-
-
 
         function getProgressBar (request) {
             return  `<div class="progress"> 
-            <div class="progress-bar bg-success" 
+            <div class="progress-bar bg-danger" 
             role="progressbar" 
             style="width: ${(request.activePage /request.endPage * 100).toFixed(0)}%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
             ${(request.activePage/request.endPage * 100).toFixed(0)}%
@@ -116,7 +83,11 @@ bnSearh.addEventListener('click', () => {
             </div>`
 
         }
+       // Events
 
+      // document.body.onload = initialState
+        document.body.addEventListener('load',initialState(),false)
+        bnSearh.addEventListener('click', () => {bnSearh.disabled=true;download()},false)
 
 
 
