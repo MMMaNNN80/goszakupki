@@ -1,30 +1,60 @@
 
 body {
-    display: inline-block;
+    display: block;
      padding:5%;
-     width: 300px;
-     padding:3%; 
+     width: 300px; 
      background-color:linear-gradient(50deg,floralwhite ,transparent );
      height:"auto";
-     box-shadow: inset 2px 2px 5px rgba(154, 147, 140, 0.5), 1px 1px 5px rgba(255, 255, 255, 1);
+     
 }
 
+
+.divGrid{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    justify-items: center;
+}
 h5 {
-font-size: 16px;
+grid-column: 1/4;
+grid-row: 1;
+font-size: 12px;
 font-weight: 500;
 color: black;
 text-shadow: 1px 1px 1px rebeccapurple;
 
 }
 .progress{
-    margin: 5%;
+    grid-column: 1/4;
+    grid-row: 2;
+    height: 86px;
+    width: 270px;
 }
-p{
-    font-size: 10px;
-    margin-bottom: 1%;
+p {
+
+    grid-column: 1/3;
+    grid-row: 3;
+    font-size: 11px;
+    margin-bottom:  4%;
+    margin-top: 4%;
     color:slategray;
-    text-shadow: 1px 1px 1px black;
+   
+ }
+
+ #downloadCSV{
+    grid-column: 1;
+    grid-row: 4;
+    justify-self: normal;
+ 
+
 }
-.progress {
-    height: 40px;
+
+.search {
+grid-column: 2/5;
+grid-row: 4;
+font-size: 12px;
+margin-left:1%;
+justify-self: normal;
+
+
 }
+

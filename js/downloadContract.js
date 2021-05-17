@@ -45,22 +45,9 @@ chrome.runtime.onMessage.addListener( (action,sender) => {
     }
 )
 
- const createPlainTextFile =  (list, objlist) => {
-        let dataFile = "data:application/txt;charset=utf-8,%EF%BB%BF";
-        dataFile += Object.keys(objlist[0]).join(`;`) + '\r\n'
-        //"Number;Status;NumberContract;Customer;Price;DateContract;DatesContract;DatePublic;DateUpdate\r\n"
-        dataFile += encodeURIComponent(list.join("\r\n"));
-        return dataFile;
-    }
-    const getOutput =  (objlist) => {
-        if (objlist.length > 0) {
-            let download = createPlainTextFile(objlist.map(el => el = Object.values(el).join(`;`)), objlist);
-            let a = document.createElement("a")
-            a.download = "contracts.csv"
-            a.href = download
-            a.click()
-        }
-    }
+
+
+
 const downLoadContract = () => {
 
     const endPage = Number(pages[pages.length - 1].innerText) ?? 0
@@ -107,10 +94,33 @@ const downLoadContract = () => {
             x.message = END;
             x.text = `${activePage} вкладка из ${activePage}`
             localStorage.setItem('state',END)
-            sendMessages(x)
+             sendMessages(x)
              getOutput(objlist)
         }
     }
   
 }
+
+
+function createPlainTextFile  (list, objlist)  {
+    let dataFile = "data:application/txt;charset=utf-8,%EF%BB%BF";
+    dataFile += Object.keys(objlist[0]).join(`;`) + '\r\n'
+    //"Number;Status;NumberContract;Customer;Price;DateContract;DatesContract;DatePublic;DateUpdate\r\n"
+    dataFile += encodeURIComponent(list.join("\r\n"));
+    return dataFile;
+}
+
+function getOutput (objlist)  {
+    if (objlist.length > 0) {
+        let download = createPlainTextFile(objlist.map(el => el = Object.values(el).join(`;`)), objlist);
+        let a = document.createElement("a")
+        a.download = "contracts.csv"  ///возвращаем encodeURIComponent + заголовок
+        a.href = download
+        //console.log(a)
+        x.linkDownload = {download:a.download, href:a.href} 
+        sendMessages(x)
+        //a.click()
+    }
+}
+
 

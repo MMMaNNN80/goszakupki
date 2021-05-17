@@ -1,9 +1,12 @@
 
 let action ={}
+
+let bnSearh = document.querySelector(".search")
+
 localStorage.getItem('state') === null ||  localStorage.getItem('state') !== 'END'? localStorage.removeItem('state') : ''
 
 
-const sendMessages = (action) => {
+const sendMessages = action => {
     chrome.tabs.query({ active: true, currentWindow: true }
         ,(tabs) => chrome.tabs.sendMessage(tabs[0].id, action))
 }
@@ -43,7 +46,7 @@ const download = () =>
 document.body.onload = initialState
 
 chrome.runtime.onMessage.addListener((request,sender,response) => {
-    const el = document.getElementsByTagName('h5')  
+    let el = document.getElementsByTagName('h5')  
     if (document.querySelector('.progress')) document.querySelector('.progress').remove()
     if (request.message && (request.message !== "END")) {       
    
@@ -61,10 +64,21 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
     } 
     else  {
         
-        localStorage.setItem('state','END') 
+       
         document.getElementById('page').textContent = request.text
         
         el[0].insertAdjacentHTML('afterend', getProgressBar({activePage:100, endPage:100}))
+        localStorage.setItem('state','END')
+       if (request.linkDownload && !document.querySelector(`#downloadCSV`)) {
+  
+       document.querySelector(`.search`).insertAdjacentHTML('afterend',
+       `<a class = "btn btn-warning" id="downloadCSV" type = "input"  href="${request.linkDownload.href}" download= "${request.linkDownload.download}">CSV</a>
+       <div id="download"></div>`
+       )
+       
+    }
+
+      
         
     } 
 }
@@ -73,6 +87,7 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
 
     chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
         if (changeInfo.status == 'complete' && localStorage.getItem('state') !== null) {
+              
               download()
         }
     })
@@ -80,7 +95,13 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
 
 
 //document.body.onload = countResultRows
-document.querySelector("button").onclick = download
+
+//document.getElementById("search").onclick = download
+
+bnSearh.addEventListener('click', () => {
+    bnSearh.disabled=true;
+    download()
+},false)
 
 
 
