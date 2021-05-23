@@ -2,7 +2,7 @@
 let action ={}
 let bnSearh = document.querySelector(".search")
 
-localStorage.getItem('state') === null ||  localStorage.getItem('state') !== 'END'? localStorage.removeItem('state') : ''
+
 
 const sendMessages = action => {
     chrome.tabs.query({ active: true, currentWindow: true }
@@ -19,32 +19,37 @@ const countResultRows = () =>{
     sendMessages(action);
 }
 const start = () =>{
+    localStorage.setItem('state','START')
     action={}
     action.message = `START`
-    sendMessages(action);
-
+     sendMessages(action);
 }
 const initialState =   () => {
-    clearLocalStorage()
-    countResultRows() 
-    start()
+        clearLocalStorage()
+        countResultRows()
+        start()
+    //при обновлении контент страницы срабатывает
 }
 
-const download = () =>
-{   
-    action={}
-    action.message  =  `downLoadContract`
-    sendMessages(action);    
+
+
+const download = () => {
+    localStorage.setItem('state', 'WORK')
+    action = {}
+    action.message = `downLoadContract`
+    sendMessages(action);
 }
 
-chrome.runtime.onMessage.addListener((request,sender,response) => {
-    let el = document.getElementsByTagName('h5')  
+    chrome.runtime.onMessage.addListener((request,sender,response) => {
+        let el = document.getElementsByTagName('h5')
+        if (request.activePage === 0) {
+            el[0].insertAdjacentHTML('afterbegin',`<h4> На данной странице нет данных для скачивания <h4>`)
+            bnSearh.disabled = true;
+            return }
     if (document.querySelector('.progress')) document.querySelector('.progress').remove()
-    if (request.message && (request.message !== "END")) {       
-   
-    el[0].insertAdjacentHTML('afterend', (request.endPage>0) && request.activePage >0 ?
-    getProgressBar(request) : `` ) 
-     localStorage.setItem('state','WORK') 
+    if (request.message && (request.message !== "END")) {
+    el[0].insertAdjacentHTML('afterend', (request.endPage>1) && request.activePage >1 ?
+    getProgressBar(request) : `` )
         if (document.getElementById('page') === null) {
             let el2 = document.createElement('p')
             el2.id = 'page'
@@ -66,12 +71,12 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
     } 
 });
 
-    chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
-        if (changeInfo.status == 'complete' && localStorage.getItem('state') !== null) {
-              
-              download()
-        }
-    })
+function onUpdatePage () {
+chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+        if (changeInfo.status == 'complete' && localStorage.getItem('state') === 'WORK' )
+        {download()}
+    })}
+
 
         function getProgressBar (request) {
             return  `<div class="progress"> 
@@ -81,13 +86,14 @@ chrome.runtime.onMessage.addListener((request,sender,response) => {
             ${(request.activePage/request.endPage * 100).toFixed(0)}%
             </div>
             </div>`
-
         }
-       // Events
 
-      // document.body.onload = initialState
         document.body.addEventListener('load',initialState(),false)
-        bnSearh.addEventListener('click', () => {bnSearh.disabled=true;download()},false)
+
+bnSearh.addEventListener('click', () => {
+            bnSearh.disabled=true;
+            download()
+            localStorage.getItem('state')==='WORK'? onUpdatePage() :''},false)
 
 
 
